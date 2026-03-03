@@ -1,0 +1,37 @@
+.forms-list{
+    width: 100%;
+    margin-top: 50px;
+}
+.form-preview{
+    border: 1px solid var(--color-violet);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 20px 50px;
+}
+.form-preview>.title{
+    font-size: 24px;
+    color: var(--color-violet);
+    margin-bottom: 20px;
+}
+.form-preview>.edit-links>.button{
+    width: 150px;
+    height: 40px;
+    font-size: 16px;
+    padding: 5px;
+    margin-right: 20px;
+    background: var(--color-purple);
+    color: var(--color-dark);
+    transition: all .3s;
+    border: none
+}
+.form-preview>.edit-links>.button:hover{
+    background: #4244CB;
+    color: #fff
+}
+.form-preview>.edit-links>.button:last-child{
+    background: #EBC4C4;
+    color: #C85456
+}
+.form-preview>.edit-links>.button:last-child:hover{
+    background: #E5AEAE
+}

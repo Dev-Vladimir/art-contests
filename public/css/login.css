@@ -1,0 +1,298 @@
+:root{
+    --color-violet: #5455C8;
+    --color-purple: #C6C4EB;
+    --color-dark: #121028;
+    --color-red: #C85456;
+    --color-light-red: #EBC4C4
+}
+*{
+    padding: 0;margin: 0;
+    list-style: none;
+    box-sizing: border-box;
+    font-family: Roboto, Sans-serif;
+    text-decoration: none;
+    color: var(--color-dark)
+}
+.d-flex{ display: flex;}
+.container-fluid {width: 100%;}
+.container{width: 95%; flex-basis: 95%; margin: auto;}
+.justify-content-start {justify-content: start;}
+.justify-content-center {justify-content: center;}
+.justify-content-between {justify-content: space-between;}
+.align-items-center{align-items: center;}
+.text-center{text-align: center;}
+.float-right{float: right;}
+.button{
+    display: flex;
+    height: 61px;
+    padding: 8px 42px;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--color-purple);
+    border: 1px solid var(--color-purple);
+    border-radius: 10px;
+    transition: all .3s;
+    font-size: 24px;
+}
+.button.small{
+    height: 40px;
+    font-size: 16px;
+}
+.button-dark-stroke{
+    color: var(--color-dark) !important;
+    border: 1px solid var(--color-dark) !important;
+}
+.attention-button{
+    background: var(--color-light-red) !important;
+    color: var(--color-red) !important;
+}
+.attention-button:hover{
+    background: var(--color-red) !important;
+    color: var(--color-light-red) !important;
+}
+.button.violet{
+    background: var(--color-violet);
+    color: var(--color-purple);  
+}
+.button.violet:hover{
+    background: #4244CB;
+    color: #fff;
+}
+h2{
+    margin-top: 100px;
+    margin-bottom: 100px;
+    font-size: 72px;
+    text-align: center;;
+}
+h3{
+    font-size: 48px;
+}
+.bg-purple{
+    background: var(--color-purple);
+    color: var(--color-dark);
+}
+.bg-light-red{
+    background: var(--color-light-red);
+}
+
+.button:hover{
+    background: var(--color-violet);
+    color: #fff;
+    border: 1px solid var(--color-violet);
+}
+.header{
+    background:  var(--color-violet);
+    color: var(--color-purple);
+    height: 171px;
+    flex-wrap: wrap;
+}
+.header>.page-title{
+    flex-basis: 100%;
+    text-align: center;
+}
+.header>.page-title>h3{
+    color: #fff
+}
+.header Ul>li{
+    margin-right: 23px;
+}
+.header a{
+    color: var(--color-purple);
+    transition: color .3s;
+    font-size: 24px;
+}
+.header a:hover{
+    color: #fff;
+}
+
+.page-content{
+    padding-bottom: 60px;
+}
+.page-title>h3{
+    color: #fff
+}
+.login-button{
+    height: 69px;
+    width: 96px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-purple);
+    transition: all .3s;
+    border-radius: 10px;
+}
+.login-button:hover{
+    background: #fff;
+}
+.login-button i{
+    color: var(--color-violet);
+    font-size: 36px;
+}
+.profile-name{
+    color: #fff;
+    font-size: 24px;
+}
+.profile-controls{
+    flex: .6;
+}
+.profile-controls>.button, .profile-controls i{
+    color: var(--color-violet);
+    transition: none;
+}
+.profile-controls>.button:hover{
+    background: #fff;
+    color: var(--color-violet);
+}
+.profile-nav{
+    margin-top: 40px;
+}
+.profile-nav li{
+    margin-right: 20px;
+}
+.profile-nav a{
+    display: block;
+    font-size: 24px;
+    color: var(--color-violet);
+    padding: 0 5px;
+    border-bottom: 1px solid transparent;
+}
+.profile-nav a:hover{
+    color: var(--color-dark);
+    border-bottom: 1px solid var(--color-dark);
+}
+.main-controls{
+    margin-top: 60px;
+}
+.main-controls>.button{
+    margin-right: 20px;
+}
+
+.profile-details{
+    margin-top: 80px;
+}
+.profile-details>.profile-title{
+    font-size: 48px;
+    color: var(--color-violet);
+}
+.profile-details>p{
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+
+.footer{
+    background: var(--color-dark);
+    padding: 50px 0;
+}
+.footer-nav li{
+    margin-right: 10px;
+}
+.footer-nav a{
+    color: var(--color-purple);
+    transition: color .3s;
+    font-size: 18px;
+}
+.footer-nav a:hover{
+    color: #fff;
+    text-decoration: underline;
+}
+.copyright{
+    width: 20%;
+    text-align: center;
+    margin: auto;
+    margin-top: 50px;
+    color: var(--color-purple)
+}
+h1{
+	color: #fff;
+	font-size: 64px;
+}
+.header{
+	height: 300px;
+	margin-bottom: 50px;
+}
+.page-title>h3{
+	color: var(--color-dark);
+}
+.form{
+	margin: auto;
+	margin-top: 20px;
+	width: 50%;
+	background: var(--color-purple);
+	padding: 2% 5%;
+	border-radius: 10px;
+}
+.form>form{
+	display: block;
+	width: 100%;
+}
+.form-input{
+	justify-content: space-between;
+	margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+.form-input>.error{
+    width: 100%;
+    color: var(--color-red)
+}
+.form-input>.label{
+	width: 20%;
+	margin-right: 20px;
+	color: var(--color-violet);
+	text-align: left;
+	font-size: 24px;
+}
+.form-input>.input{
+	flex: 1;
+	align-items: flex-end;;
+}
+.form-input>.input>input{
+	border: none;
+	outline: none;
+	border-bottom: 1px solid var(--color-dark);
+	background: transparent;
+	display: block;
+	width: 100%;
+	color: var(--color-dark);
+	font-size: 24px;
+	padding-left: 10px;
+}
+.form-input>.input>input::placeholder{
+	color: var(--color-dark);
+	font-size: 16px;
+}
+.form-input>.input>textarea{
+    width: 100%;
+    bottom: 1px solid var(--color-dark);
+    border-radius: 10px;
+    resize: none;
+}
+.form button{
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	width: 100%;
+	background: var(--color-violet);
+	border: none;
+	outline: none;
+	padding: 10px;
+	border-radius: 5px;
+	color: var(--color-purple);
+	font-size: 24px;
+	transition: all .3s;
+	margin-top: 80px;
+}
+.form button:hover{
+	background: #3d2e8d;
+	color: #fff;
+}
+.form-links{
+	margin-top: 100px;
+}
+.form-links>a{
+	color: var(--color-violet);
+}
+.form-links>a:hover{
+	color: var(--color-dark);
+}

@@ -1,0 +1,299 @@
+.form{
+	margin: auto;
+	margin-top: 20px;
+	width: 100%;
+	background: var(--color-purple);
+	padding: 2% 5%;
+	border-radius: 10px;
+}
+.form>form{
+	display: block;
+	width: 100%;
+}
+.form-section{
+	margin-bottom: 20px;
+}
+.form-section-heading{
+    background: var(--color-violet);
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+.form-section-heading>.menu{
+    height: 60px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 15px 0;
+	cursor: pointer;
+}
+.form-section-heading>.menu>span{
+    width: 40px;
+    height: 3px;
+    background: var(--color-purple);
+    border-radius: 3px;
+}
+.form-section-heading>.menu:hover>span{
+	background: #fff;
+}
+.form-section-heading>.title{
+	color: var(--color-purple);
+	font-size: 24px;
+}
+.form-section-heading>.delete{
+	cursor: pointer;
+}
+.form-section-heading>.delete>i{
+	font-size: 24px;
+	color: var(--color-purple);
+	font-weight: 100;
+	transition: all(.3s)
+}
+.form-section-heading>.delete:hover>i{
+	color: #fff
+}
+.form-input{
+	justify-content: space-between;
+	margin-bottom: 40px;
+	align-items: center;
+}
+.form-input>.label{
+	width: 30%;
+	margin-right: 20px;
+	color: var(--color-violet);
+	text-align: left;
+	font-size: 24px;
+}
+.register-form .form-input>.label{
+	font-size: 16px;
+}
+.form-input>.input{
+	flex: 1;
+	align-items: flex-end;;
+}
+.form-input>.input>input{
+	border: none;
+	outline: none;
+	border-bottom: 1px solid var(--color-dark);
+	background: transparent;
+	display: block;
+	width: 100%;
+	color: var(--color-dark);
+	font-size: 16px;
+	padding-left: 10px;
+	transition: all .3s;
+}
+.form-input>.input>input:focus{
+	border-bottom: 1px solid var(--color-violet);
+}
+/*.register-form .form-input>.input>input{
+	font-size: 16px;
+}*/
+.form-input>.input>input::placeholder{
+	color: var(--color-dark);
+	font-size: 16px;
+	opacity: 1;
+	transition: opacity .3s;
+}
+
+.form-input>.input>input:focus::placeholder{
+	opacity: 0;
+}
+.form-input>.input>textarea{
+	border: 1px solid var(--color-dark);
+	border-radius: 5px;
+	outline: none;
+	background: transparent;
+	display: block;
+	width: 100%;
+	color: var(--color-dark);
+	font-size: 16px;
+	padding: 5px 10px;
+	resize: none;
+	transition: all .3s;
+}
+.form-input>.input>textarea:focus{
+	border: 1px solid var(--color-violet);
+	box-shadow: 0px 0px 2px var(--color-dark) inset;
+}
+.form-input-checkbox{
+	flex-wrap: wrap;
+}
+.form-input-checkbox>.input{
+	display: flex;
+	width: 10%;
+	align-items: center;
+	justify-content: flex-start;
+}
+.form-input-checkbox>.input>input{
+	display: flex;
+	justify-content: flex-start;
+	width: 20px;
+	height: 20px;
+	border: 1px solid var(--color-violet);
+	accent-color: var(--color-purple);
+}
+.form-input-checkbox>.label{
+	width: 90%;
+	color: var(--color-dark);
+}
+.form-input-checkbox>.label>a{
+	text-decoration: underline;
+	transition: color .3s;
+}
+.form-input-checkbox>.label>a:hover{
+	color: var(--color-violet);
+}
+.form button{
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	width: 100%;
+	background: var(--color-violet);
+	border: none;
+	outline: none;
+	padding: 10px;
+	border-radius: 5px;
+	color: var(--color-purple);
+	font-size: 24px;
+	transition: all .3s;
+	margin-top: 80px;
+}
+.form button:hover{
+	background: #3d2e8d;
+	color: #fff;
+}
+.form-links{
+	margin-top: 100px;
+}
+.form-links>a{
+	color: var(--color-violet);
+}
+.form-links>a:hover{
+	color: var(--color-dark);
+}
+.add-field{
+	display: flex;
+	width: 20%;
+	/* padding: 5px 10px; */
+	background: var(--color-violet);
+	border: 1px solid var(--color-violet);
+	cursor: pointer;
+	align-items: center;
+}
+.add-field>i{
+	color: var(--color-purple);
+}
+.form-section-type{
+	margin-bottom: 30px;
+}
+.field-types{
+	flex: 1;
+	margin-top: 10px;
+}
+.field-types-button{
+	background: var(--color-violet);
+	color: var(--color-purple);
+	width: 20%;
+	align-items: center;
+	text-align: center;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: all .3s;
+	padding: 5px;
+}
+.field-types-button:hover, .field-types-button.active{
+	background: #3d2e8d;
+}
+
+
+
+.form-input .input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #cc4949;
+    transition: 0.3s;
+	height: 20px;
+    border-radius: 10px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 30px;
+    width: 30px;
+    left: 0;
+    bottom: -4px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: #007bff;
+}
+input:checked + .toggle-slider:before{
+	left: 60px
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(30px);
+}
+
+.toggle-label {
+    font-size: 14px;
+    color: #666;
+	display: none;
+}
+
+.form-section-settings {
+    display: none; /* скрыто по умолчанию */
+}
+
+.form-section-settings.visible {
+    display: block; /* или flex, если нужно */
+}
+
+.sort-buttons{
+	height: 60px;
+	width: 120px
+}
+.sort-buttons>a{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: var(--color-purple);
+	border-radius: 5px;
+	height: 50px; width: 50px;
+	margin-right: 10px;
+}
+.sort-buttons>a>i{
+	color: var(--color-violet);
+}
