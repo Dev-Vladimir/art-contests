@@ -5,7 +5,9 @@
 @if(session('success'))
     <h1 class="message">{{ session('success') }}</h1>
 @endif
-
+@if(session('error'))
+    <h1 class="message">{{ session('error') }}</h1>
+@endif
 <div class="profile-details">
     <div class="profile-title">Основные сведения</div>
     <p>Полное название: {{ $user->full_name }}</p>

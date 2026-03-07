@@ -12,12 +12,13 @@
         <h1>Электронная система музыкальных конкурсов</h1>
         <div class="header-nav d-flex container justify-content-center align-items-center">
             <ul class="d-flex">
-                <li><a href="{{route('home')}}">Главная</a></li>
-                <li><a href="{{route('about')}}">О системе</a></li>
-                <li><a href="{{route('contests.list')}}">Конкурсы</a></li>
-                <li><a href="{{route('news')}}">Новости</a></li>
-                <li><a href="{{route('contact')}}">Контакты</a></li>
-                <li><a href="{{route('login')}}">Вход на сайт</a></li>
+                <li><a href="{{ route('home') }}">На главную</a></li>
+                <li><a href="{{route('dashboard') }}">Профиль</a></li>
+                <li><a href="{{route('user.contests.index') }}">Конкурсы</a></li>
+                <li><a href="{{route('user.forms.index') }}">Формы</a></li>
+                <li><a href="#">Результаты</a></li>
+                <li><a href="#">Статистика</a></li>
+                <li><a href="#">Обучение</a></li>
             </ul>
         </div>
     </div>
@@ -25,8 +26,15 @@
         <div class="page-title">
             <h3>Обновление профиля</h3>
         </div>
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
         <div class="d-flex justify-content-center form register-form">
-            <form action="{{route('user.edit')}}" method="POST">
+            <form action="{{route('user.edit', $user)}}" method="POST">
                 @csrf
                 <div class="form-input d-flex">
                     <div class="label">Название организации</div>
@@ -38,11 +46,6 @@
                     <!-- <div class="input"><input type="text" placeholder="Полное название Организации" /></div> -->
                     <div class="input"><textarea rows="5" name="full_name" value="{{ old('full_name') }}">{{ $user->full_name }}</textarea></div>
                     @error('full_name') <div class="error">{{$message}} </div>@enderror
-                </div>
-                <div class="form-input d-flex">
-                    <div class="label">Email</div>
-                    <div class="input"><input type="text" placeholder="Введите адрес электронной почты" name="email" value="{{ $user->email }}"/></div>
-                    @error('email') <div class="error">{{$message}} </div>@enderror
                 </div>
                 <div class="form-input d-flex">
                     <div class="label">Адрес организации</div>
@@ -61,6 +64,26 @@
                     @error('phone') <div class="error">{{$message}} </div>@enderror
                 </div>
                 <button type="submit">Обновить профиль</button>
+            </form>
+        </div>
+        <div class="d-flex justify-content-center form">
+            <form action="{{route('user.edit-email', $user)}}" method="POST">
+                @csrf
+                <div class="form-input d-flex">
+                    <div class="label">Email</div>
+                    <div class="input"><input type="text" placeholder="Введите адрес электронной почты" name="email" value="{{ $user->email }}"/></div>
+                    @error('email') <div class="error">{{$message}} </div>@enderror
+                </div>
+                <button type="submit">Обновить email</button>
+                @if(Auth::user()->pending_email)
+                    <div class="alert alert-info">
+                        Ожидает подтверждения: {{ Auth::user()->pending_email }}
+                        <form method="POST" action="{{ route('resend.email.change') }}" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-link">Отправить повторно</button>
+                        </form>
+                    </div>
+                @endif
             </form>
         </div>
     </div>

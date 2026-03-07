@@ -17,10 +17,15 @@ return new class extends Migration
             $table->mediumText('title');
             $table->mediumText('nominations')->nullable();
             $table->mediumText('groups')->nullable();
-            $table->integer('form_id');
             $table->integer('user_id');
             $table->boolean('is_active')->default(false);
-            // $table->string('regulations');
+            $table->boolean('open')->default(false);
+            
+            // Компактный вариант - сразу создает поле и ключ
+            $table->foreignId('form_id')
+                ->nullable()
+                ->constrained('forms')  // автоматически создает внешний ключ
+                ->onDelete('set null');
         });
     }
 

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Contest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Form;
 
@@ -42,24 +44,38 @@ class ContestsController extends Controller
     {
         // dd($request->toArray());
         $user = Auth::user();
-        $valiated = $request->validate([
+
+        $validated = $request->validate([
             'title' => 'required|max:12500',
-            'form_id' => 'required',
-        ],[
+            'form_id' => 'required|exists:forms,id', // проверяем что форма существует
+            'groups' => 'nullable|array',
+            'nominations' => 'nullable|array',
+        ], [
             'title.required' => 'Название конкурса должно быть заполнено',
-            'title.max' => 'Слишком длинное название. Попробуйте придумать покороче',
-            'form_id.required' => 'Вы не привязали форму к конкурсу'
+            'title.max' => 'Слишком длинное название',
+            'form_id.required' => 'Вы не привязали форму к конкурсу',
         ]);
+
         $data = [
             'user_id' => $user->id,
             'title' => $request->title,
             'form_id' => $request->form_id,
             'is_active' => false,
         ];
-        if (isset($request->groups)) $data['groups'] = implode('|', $request->groups);
-        if (isset($request->nominations)) $data['groups'] = implode('|', $request->nominations);
-        Contest::create($data);
-        return redirect(route('user.contests.index'))->with('success', 'Конкурс успешно создан');
+
+        if ($request->has('groups') && is_array($request->groups)) {
+            $data['groups'] = implode('|', $request->groups);
+        }
+
+        if ($request->has('nominations') && is_array($request->nominations)) {
+            $data['nominations'] = implode('|', $request->nominations);
+        }
+
+        // Создаем конкурс - form_id сохраняется автоматически
+        $contest = Contest::create($data);
+
+        return redirect(route('user.contests.index'))
+            ->with('success', 'Конкурс успешно создан');
     }
 
     /**
@@ -67,8 +83,11 @@ class ContestsController extends Controller
      */
     public function show(string $id)
     {
-        $contest = Contest::with('form')->findOrFail($id);
-
+        $user = Auth::user();
+        $contest = Contest::with('form:id,title')->findOrFail($id);
+        $form = $contest->form;
+        // $forms
+        return view('user.contests.view', compact('user', 'contest', 'form'));
     }
 
     /**
@@ -76,7 +95,8 @@ class ContestsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // $user = Auth::user();
+        // $this->authorize('edit-contest', $user);
     }
 
     /**
@@ -115,5 +135,21 @@ class ContestsController extends Controller
             return redirect()->route('user.contests.index')
                 ->with('error', 'Ошибка при удалении: ' . $e->getMessage());
         }
+    }
+
+    public function makeActive($id){
+
+    }
+
+    public function makeInactive($id){
+
+    }
+
+    public function open($id){
+
+    }
+
+    public function close($id){
+        
     }
 }

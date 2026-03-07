@@ -24,6 +24,10 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('/user/contests/edit/{id}', [ContestsController::class, 'edit'])->name('user.contests.edit');
     Route::post('/user/contests/edit/{id}', [ContestsController::class, 'update'])->name('user.contests.update');
     Route::get('/user/contests/show/{id}', [ContestsController::class, 'show'])->name('user.contests.show');
+    Route::get('/user/contests/active/{id}', [ContestsController::class, 'makeActive'])->name('user.contests.activate');
+    Route::get('/user/contests/inactive/{id}', [ContestsController::class, 'makeInactive'])->name('user.contests.inactivate');
+    Route::get('/user/contests/open/{id}', [ContestsController::class, 'open'])->name('user.contests.open');
+    Route::get('/user/contests/close/{id}', [ContestsController::class, 'close'])->name('user.contests.close');
     Route::get('/user/contests/delete/{id}', [ContestsController::class, 'destroy'])->name('user.contests.delete');
 
     Route::get('/user/forms', [FormsController::class, 'index'])->name('user.forms.index');
@@ -32,11 +36,17 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('/user/forms/edit/{id}', [FormsController::class, 'edit'])->name('user.forms.edit');
     Route::post('/user/forms/edit/{id}', [FormsController::class, 'update'])->name('user.forms.update');
     Route::get('/user/forms/show/{id}', [FormsController::class, 'show'])->name('user.forms.show');
-    Route::get('/user/forms/delete/{id}', [FormsController::class, 'destroy'])->name('user.forms.delete');
+    Route::get('/user/forms/delete/{id}', [FormsController::class, 'delete'])->name('user.forms.delete');
 
-    Route::get('user', [UsersController::class, 'dashboard'])->name('dashboard');
-    Route::get('user/edit', [UsersController::class, 'edit'])->name('user.edit');
-    Route::post('user/edit', [UsersController::class, 'updateProfile']);
+
+    Route::get('user/{id?}', [UsersController::class, 'dashboard'])->name('dashboard');
+    Route::get('user/edit/{id?}', [UsersController::class, 'edit'])->name('user.edit');
+    Route::post('user/edit/{id?}', [UsersController::class, 'updateProfile']);
+    Route::post('user/edit-email', [AuthController::class, 'editEmail'])->name('user.edit-email');
+    Route::get('/verify-email-change/{token}', [AuthController::class, 'verifyEmailChange'])->name('verify.email.change');
+    Route::post('/resend-email-change', [AuthController::class, 'resendEmailChange'])->name('resend.email.change');
+    Route::get('user/delete/{id?}', [UsersController::class, 'delete'])->name('user.delete');
+    Route::post('user/delete/{id?}', [UsersController::class, 'destroy']);
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
 

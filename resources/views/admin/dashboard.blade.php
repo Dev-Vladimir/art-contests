@@ -14,7 +14,7 @@
     <div class="container-fluid header d-flex justify-content-center align-items-center">
         <div class="container header-top d-flex justify-content-between">
             <div class="page-title">
-                <h3>Профиль школы</h2>
+                <h3>Администрирование</h2>
             </div>
             <div class="header-login">
                 <a class="login-button" href="{{route('logout')}}"><i class="bi bi-box-arrow-right"></i></a> 

@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="{{ asset('css/contests-list.css') }}">
 @endsection
 
+@section('page_title', 'Конкурсы')
+
 @section('content')
     @if(session('error'))
         <h3>{{ session('error') }}</h3>
@@ -18,6 +20,16 @@
                 <div class="title">{{$contest['title']}}</div>
                 <div class="edit-links d-flex">
                     <a href="{{route('user.contests.show', ['id' => $contest['id']])}}" class="button">Посмотреть</a>
+                    @if($contest['is_active'])
+                        <a href="{{route('user.contests.deactivate', ['id' => $contest['id']])}}" class="button">Завершить</a>
+                    @else
+                        <a href="{{route('user.contests.activate', ['id' => $contest['id']])}}" class="button">Начать конкурс</a>
+                    @endif
+                    @if($contest['open'])
+                        <a href="{{route('user.contests.close', ['id' => $contest['id']])}}" class="button">Закрыть подачу заявок</a>
+                    @else
+                        <a href="{{route('user.contests.open', ['id' => $contest['id']])}}" class="button">Открыть подачу заявок</a>
+                    @endif
                     <a href="{{route('user.contests.edit', ['id' => $contest['id']])}}" class="button">Редактировать</a>
                     <a href="{{route('user.contests.delete', ['id' => $contest['id']])}}" class="button">Удалить</a>
                 </div>

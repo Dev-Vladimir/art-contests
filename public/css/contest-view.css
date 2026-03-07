@@ -1,0 +1,132 @@
+.header{
+    background:  var(--color-violet);
+    color: var(--color-purple);
+    height: 320px;
+    flex-wrap: wrap;
+}
+.header>.page-title{
+    flex-basis: 100%;
+    text-align: center;
+}
+.header>.page-title>h3{
+    color: #fff
+}
+.header Ul>li{
+    margin-right: 23px;
+}
+.header a{
+    color: var(--color-purple);
+    transition: color .3s;
+    font-size: 24px;
+}
+.header a:hover{
+    color: #fff;
+}
+
+.page-content{
+    padding-bottom: 60px;
+}
+.page-title>h3{
+    color: #fff
+}
+.login-button{
+    height: 69px;
+    width: 96px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-purple);
+    transition: all .3s;
+    border-radius: 10px;
+}
+.login-button:hover{
+    background: #fff;
+}
+.login-button i{
+    color: var(--color-violet);
+    font-size: 36px;
+}
+.profile-name{
+    color: #fff;
+    font-size: 24px;
+}
+.profile-controls{
+    flex: .6;
+}
+.profile-controls>.button, .profile-controls i{
+    color: var(--color-violet);
+    transition: none;
+}
+.profile-controls>.button:hover{
+    background: #fff;
+    color: var(--color-violet);
+}
+.profile-nav{
+    margin-top: 40px;
+    margin-left: 2.5%;
+    padding-bottom: 20px;
+}
+.profile-nav li{
+    margin-right: 20px;
+}
+.profile-nav a{
+    display: block;
+    font-size: 24px;
+    color: var(--color-purple);
+    padding: 0 5px;
+}
+.profile-nav a:hover{
+    color: #fff;
+}
+.main-controls{
+    margin-top: 60px;
+}
+.main-controls>.button{
+    margin-right: 20px;
+}
+
+.profile-details{
+    margin-top: 80px;
+}
+.profile-details>.profile-title{
+    font-size: 48px;
+    color: var(--color-violet);
+}
+.profile-details>p{
+    font-size: 24px;
+    margin-top: 20px;
+}
+.contest-edit-buttons{
+    width: 100%;
+    padding: 0 2.5%;
+}
+.contest-edit-buttons>.button{
+    display: inline-flex;
+}
+.contest-info .button{
+    display: inline-flex;
+    height: auto;
+    padding: 5px 10px;
+}
+.contest-info>.d-flex{
+    align-items: center;
+}
+.contest-info .title{
+    width: 25%;
+}
+.participants, .form{
+    width: 25%;
+    height: 400px;
+    margin-right: 12.5%;
+    background: var(--color-purple);
+    padding: 20px 10px;
+    color: var(--color-violet);
+    flex-wrap: wrap;
+}
+.participants>div, .form>div{
+    width: 100%;
+    color: var(--color-violet);
+}
+.participants>.button{
+    height: 50px;
+}

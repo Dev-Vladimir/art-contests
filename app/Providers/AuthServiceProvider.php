@@ -23,49 +23,99 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-         // Просмотр формы (может пригодиться)
-        Gate::define('view-form', function (?User $user, Form $form) {
-            // если $user = null, то доступ запрещен
-            // dd($user);
-            return $user && ($user->id === (int)$form->user_id || $user->isAdmin());
+
+        // Общая логика для проверки прав (свой ресурс или админ)
+        $canAccess = function ($user, $resource) {
+            // Если пользователь не авторизован - доступ запрещен
+            if (!$user) {
+                return false;
+            }
+            return $user->id === (int)$resource->user_id || $user->isAdmin();
+        };
+
+        // Общая логика для пользователей (свой профиль или админ)
+        $canAccessUser = function (User $currentUser, User $targetUser) {
+            return $currentUser->id === $targetUser->id || $currentUser->isAdmin();
+        };
+
+        // ===== ГЕЙТЫ ДЛЯ FORM =====
+
+        // Просмотр формы
+        Gate::define('view-form', function (?User $user, Form $form) use ($canAccess) {
+            return $canAccess($user, $form);
         });
 
         // Редактирование формы
-        Gate::define('edit-form', function (User $user, Form $form) {
-            // dd($user->id, $form->user_id);
-            return $user->id == (int)$form->user_id || $user->isAdmin();
+        Gate::define('edit-form', function (User $user, Form $form) use ($canAccess) {
+            return $canAccess($user, $form);
         });
 
-        // Обновление формы (обычно аналогично edit)
-        Gate::define('update-form', function (User $user, Form $form) {
-            return $user->id === (int)$form->user_id || $user->isAdmin();
+        // Обновление формы
+        Gate::define('update-form', function (User $user, Form $form) use ($canAccess) {
+            return $canAccess($user, $form);
         });
 
         // Удаление формы
-        Gate::define('delete-form', function (User $user, Form $form) {
-            return $user->id === (int)$form->user_id || $user->isAdmin();
+        Gate::define('delete-form', function (User $user, Form $form) use ($canAccess) {
+            return $canAccess($user, $form);
         });
-         // Просмотр конкурса (может пригодиться)
-        Gate::define('view-contest', function (?User $user, Contest $contest) {
-            // если $user = null, то доступ запрещен
-            // dd($user);
-            return $user && ($user->id === (int)$contest->user_id || $user->isAdmin());
+
+
+        // ===== ГЕЙТЫ ДЛЯ CONTEST =====
+
+        // Просмотр конкурса
+        Gate::define('view-contest', function (?User $user, Contest $contest) use ($canAccess) {
+            return $canAccess($user, $contest);
         });
 
         // Редактирование конкурса
-        Gate::define('edit-contest', function (User $user, Contest $contest) {
-            // dd($user->id, $form->user_id);
-            return $user->id == (int)$contest->user_id || $user->isAdmin();
+        Gate::define('edit-contest', function (User $user, Contest $contest) use ($canAccess) {
+            return $canAccess($user, $contest);
         });
 
-        // Обновление конкурса (обычно аналогично edit)
-        Gate::define('update-contest', function (User $user, Contest $contest) {
-            return $user->id === (int)$contest->user_id || $user->isAdmin();
+        // Обновление конкурса
+        Gate::define('update-contest', function (User $user, Contest $contest) use ($canAccess) {
+            return $canAccess($user, $contest);
         });
 
         // Удаление конкурса
-        Gate::define('delete-contest', function (User $user, Contest $contest) {
-            return $user->id == (int)$contest->user_id || $user->isAdmin();
+        Gate::define('delete-contest', function (User $user, Contest $contest) use ($canAccess) {
+            return $canAccess($user, $contest);
+        });
+
+
+        // ===== ГЕЙТЫ ДЛЯ USER =====
+
+        // Просмотр профиля пользователя
+        Gate::define('view-user', function (?User $currentUser, User $targetUser) use ($canAccessUser) {
+            // Если пользователь не авторизован - доступ запрещен
+            if (!$currentUser) {
+                return false;
+            }
+            return $canAccessUser($currentUser, $targetUser);
+        });
+
+        // Редактирование пользователя
+        Gate::define('edit-user', function (User $currentUser, User $targetUser) use ($canAccessUser) {
+            return $canAccessUser($currentUser, $targetUser);
+        });
+
+        // Обновление пользователя
+        Gate::define('update-user', function (User $currentUser, User $targetUser) use ($canAccessUser) {
+            return $canAccessUser($currentUser, $targetUser);
+        });
+
+        // Смена пароля
+        Gate::define('change-password', function (User $currentUser, User $targetUser) use ($canAccessUser) {
+            return $canAccessUser($currentUser, $targetUser);
+        });
+
+        // Смена email
+        Gate::define('change-email', function (User $currentUser, User $targetUser) use ($canAccessUser) {
+            return $canAccessUser($currentUser, $targetUser);
+        });
+        Gate::define('delete-user', function (User $currentUser, User $targetUser) use ($canAccessUser) {
+            return $canAccessUser($currentUser, $targetUser);
         });
     }
 }

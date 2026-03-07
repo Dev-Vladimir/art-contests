@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\URL;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyEmailChange;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Str;
@@ -19,6 +22,7 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    use AuthorizesRequests, ValidatesRequests;
     // Регистрация
     public function register()
     {
@@ -218,5 +222,83 @@ class AuthController extends Controller
         return $status === Password::PASSWORD_RESET
             ? redirect()->route('login')->with('success', __($status))
             : back()->withErrors(['email' => [__($status)]]);
-}
+    }
+
+    public function editEmail(Request $request){
+        $validated = $request->validate([
+            'email' => 'required|max:255|unique:users',
+        ], [
+            'email.required' => 'email не заполнен',
+            'email.max' => 'слишком длинная почта',
+            'email.unique' => 'пользователь с такой почтой уже существует!'
+        ]);
+        
+        $user = Auth::user();
+        
+        // Сохраняем новый email во временное поле
+        $user->pending_email = $request->email;
+        $user->email_verification_token = Str::random(60);
+        $user->save();
+        
+        // Отправляем письмо для подтверждения
+        Mail::to($request->email)->send(new VerifyEmailChange($user));
+        
+        return redirect()->route('dashboard')->with('success', 'Письмо с подтверждением отправлено на новый email');
+    }
+    /**
+     * Подтверждение смены email
+     */
+    public function verifyEmailChange($token)
+    {
+        // Ищем пользователя с таким токеном
+        $user = User::where('email_verification_token', $token)->first();
+        
+        if (!$user) {
+            return redirect()->route('dashboard')
+                ->with('error', 'Недействительная или устаревшая ссылка подтверждения');
+        }
+        
+        // Проверяем, не истек ли срок действия токена (например, 24 часа)
+        if ($user->updated_at->diffInHours(now()) > 24) {
+            return redirect()->route('dashboard')
+                ->with('error', 'Срок действия ссылки истек. Запросите смену email повторно');
+        }
+        
+        // Обновляем email
+        $user->email = $user->pending_email;
+        $user->pending_email = null;
+        $user->email_verification_token = null;
+        $user->email_verified_at = now(); // Сразу подтверждаем новый email
+        $user->save();
+        
+        // Если пользователь был залогинен, обновляем сессию (опционально)
+        if (Auth::check() && Auth::id() === $user->id) {
+            // Можно ничего не делать, или перенаправить
+        }
+        
+        return redirect()->route('dashboard')
+            ->with('success', 'Email успешно изменен и подтвержден!');
+    }
+    /**
+     * Повторная отправка письма для подтверждения смены email
+     */
+    public function resendEmailChange(Request $request)
+    {
+        $user = Auth::user();
+        
+        if (!$user->pending_email) {
+            return redirect()->route('dashboard')
+                ->with('error', 'Нет ожидающей смены email');
+        }
+        
+        // Генерируем новый токен
+        $user->email_verification_token = Str::random(60);
+        $user->save();
+        
+        // Отправляем письмо повторно
+        Mail::to($user->pending_email)->send(new VerifyEmailChange($user));
+        
+        return redirect()->route('dashboard')
+            ->with('success', 'Письмо с подтверждением отправлено повторно');
+    }
 }
