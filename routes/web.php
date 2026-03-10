@@ -22,7 +22,7 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('/user/contests/new', [ContestsController::class, 'create'])->name('user.contests.new');
     Route::post('/user/contests/new', [ContestsController::class, 'store']);
     Route::get('/user/contests/edit/{id}', [ContestsController::class, 'edit'])->name('user.contests.edit');
-    Route::post('/user/contests/edit/{id}', [ContestsController::class, 'update'])->name('user.contests.update');
+    Route::post('/user/contests/edit/{id}', [ContestsController::class, 'update']);
     Route::get('/user/contests/show/{id}', [ContestsController::class, 'show'])->name('user.contests.show');
     Route::get('/user/contests/active/{id}', [ContestsController::class, 'makeActive'])->name('user.contests.activate');
     Route::get('/user/contests/inactive/{id}', [ContestsController::class, 'makeInactive'])->name('user.contests.inactivate');

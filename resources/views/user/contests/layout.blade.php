@@ -32,8 +32,8 @@
             </ul>
         </div>
         <div class="contest-edit-buttons">
-            <a href="{{route('user.contests.edit', ['id', $contest->id])}}" class="button bg-purple">Редактировать конкурс</a>
-            <a href="{{route('user.contests.delete', ['id', $contest->id])}}" class="button danger">Удалить конкурс</a>
+            <a href="{{route('user.contests.edit', ['id' => $contest->id])}}" class="button bg-purple">Редактировать конкурс</a>
+            <a href="{{route('user.contests.delete', ['id'=> $contest->id])}}" class="button danger">Удалить конкурс</a>
         </div>
     </div>
     <div class="container page-content">

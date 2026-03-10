@@ -17,9 +17,9 @@
         <div class="contest-open d-flex">
             <div class="title">Прием заявок: {{$contest->open ? 'открыт' : 'закрыт'}}</div>
             @if($contest->open)
-                <a href="{{user.contests.close}}" class="button">Закрыть прием заявок</a>
+                <a href="{{ route('user.contests.close', ['id' => $contest->id])}}" class="button">Закрыть прием заявок</a>
             @else
-                <a href="user.contests.open" class="button">Открыть прием заявок</a>
+                <a href="{{ route('user.contests.open', ['id' => $contest->id]) }}" class="button">Открыть прием заявок</a>
             @endif
         </div>
         <div class="d-flex">

@@ -86,7 +86,7 @@ class ContestsController extends Controller
         $user = Auth::user();
         $contest = Contest::with('form:id,title')->findOrFail($id);
         $form = $contest->form;
-        // $forms
+        // dd($contest->toArray());
         return view('user.contests.view', compact('user', 'contest', 'form'));
     }
 
@@ -95,8 +95,12 @@ class ContestsController extends Controller
      */
     public function edit(string $id)
     {
-        // $user = Auth::user();
-        // $this->authorize('edit-contest', $user);
+        $user = Auth::user();
+        $contest = Contest::with('form')->findOrFail($id);
+        // dd($contest->toArray());
+        $forms = $user->forms->toArray();
+        $this->authorize('edit-contest', $contest);
+        return view('user.contests.edit', compact('user', 'contest', 'forms'));
     }
 
     /**
@@ -104,7 +108,32 @@ class ContestsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $contest = Contest::findOrFail($id);
+        $user = Auth::user();
+        $this->authorize('edit-contest', $contest);
+        $validated = $request->validate([
+            'title' => 'required|max:12500',
+            'form_id' => 'required|exists:forms,id', // проверяем что форма существует
+            'groups' => 'nullable|array',
+            'nominations' => 'nullable|array',
+        ], [
+            'title.required' => 'Название конкурса должно быть заполнено',
+            'title.max' => 'Слишком длинное название',
+            'form_id.required' => 'Вы не привязали форму к конкурсу',
+        ]);
+        $data = [
+            'title' => $request->title,
+            'form_id' => $request->form_id,
+        ];
+        if ($request->has('groups') && is_array($request->groups)) {
+            $data['groups'] = implode('|', $request->groups);
+        }
+
+        if ($request->has('nominations') && is_array($request->nominations)) {
+            $data['nominations'] = implode('|', $request->nominations);
+        }
+        $contest->update($data);
+        return redirect(route('users.contests.index'))->with('success', 'Конкурс успешно обновлен');
     }
 
     /**
