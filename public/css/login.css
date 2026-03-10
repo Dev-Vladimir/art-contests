@@ -207,6 +207,7 @@ h3{
 h1{
 	color: #fff;
 	font-size: 64px;
+    text-align: center;
 }
 .header{
 	height: 300px;
@@ -295,4 +296,8 @@ h1{
 }
 .form-links>a:hover{
 	color: var(--color-dark);
+}
+
+@media screen and (max-width: 1400px){
+    .header a{font-size: 18px;}
 }

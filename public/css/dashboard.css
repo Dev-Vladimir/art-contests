@@ -35,6 +35,16 @@
     transition: all .3s;
     font-size: 24px;
 }
+.page-content .button{
+    display: inline-flex;
+    background: var(--color-purple);
+    color: var(--color-violet);
+    margin-top: 20px;
+}
+.page-content .button:hover{
+    background: var(--color-violet);
+    color: #fff;
+}
 .button.small{
     height: 40px;
     font-size: 16px;
@@ -70,6 +80,9 @@ h2{
 }
 h3{
     font-size: 48px;
+}
+.page-content h3{
+    margin-top: 40px;
 }
 .solid{
     background: transparent;
@@ -147,6 +160,7 @@ h3{
 .profile-controls>.button, .profile-controls i{
     color: var(--color-violet);
     transition: none;
+    margin-left: 10px;
 }
 .profile-controls>.button:hover{
     background: #fff;
@@ -211,4 +225,10 @@ h3{
     margin: auto;
     margin-top: 50px;
     color: var(--color-purple)
+}
+
+@media screen and (max-width: 1400px){
+    .profile-nav a{
+        font-size: 18px;
+    }
 }
