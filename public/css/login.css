@@ -224,6 +224,7 @@ h1{
 	padding: 2% 5%;
 	border-radius: 10px;
 }
+.register-form{width: 80%;}
 .form>form{
 	display: block;
 	width: 100%;
