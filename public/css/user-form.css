@@ -275,7 +275,8 @@
 .form-input .input {
     display: flex;
     align-items: center;
-    gap: 10px;
+	flex: 1;
+	flex-wrap: wrap;
 }
 
 .toggle-switch {
@@ -328,6 +329,19 @@ input:checked + .toggle-slider:before{
 input:checked + .toggle-slider:before {
     transform: translateX(30px);
 }
+.select-option-row{
+	height: 40px;
+	width: 100%;
+	gap: 5px;
+	justify-content: space-between;
+}
+.option-value, .option-label{
+	height: 40px;
+}
+button.remove-option-btn{
+	margin-top: 0;
+}
+button.add-option-btn{margin-top: 20px;}
 
 .toggle-label {
     font-size: 14px;
