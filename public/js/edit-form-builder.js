@@ -1,138 +1,3 @@
-// class FormBuilder{
-
-//     constructor() {
-//         // Создаем маппинг типов к методам
-//         this.inputHandlers = {
-//             text: this.textInput,
-//             textarea: this.textareaInput,
-//             select: this.selectInput,
-//             file: this.fileInput,
-//             // password: this.passwordInput,
-//             // date: this.dateInput
-//         };
-//         this.fields = [];
-        
-//         // Привязываем контекст ко всем методам
-//         Object.keys(this.inputHandlers).forEach(key => {
-//             if (typeof this.inputHandlers[key] === 'function') {
-//                 this.inputHandlers[key] = this.inputHandlers[key].bind(this);
-//             }
-//         });
-        
-//         this.init();
-//     }
-
-//     init() {
-//         const formData = document.getElementById('form-data');
-//         this.formSetings = document.getElementById('form-settings');
-//         if (formData) return this.render(formData);
-//         this.render();
-//         this.convertSelectToButtons(this.formSetings);
-//     }
-
-//     render(data = false) {
-//         if (!data) data = fieldset;
-//         document.querySelector('#form_title').value = data.formName;
-        
-//         data.fields.forEach(field => {
-//             // Получаем нужный обработчик по типу поля
-//             const handler = this.inputHandlers[field.type] || this.textInput;
-            
-//             // Вызываем обработчик
-//             const inputElement = handler.call(this, field);
-            
-//             this.formSetings.append(inputElement);
-//         });
-//     }
-
-//     convertSelectToButtons(formSettings){
-//         let selects = formSettings.querySelectorAll('.form-section-type select')
-//         if (selects){
-//             selects.forEach(item =>{
-//                 const options = Array.from(item.options);
-//                 const container = htmlContainer('div', false, ['field-types', 'd-flex', 'justify-content-between'])
-//                 item.style.display = 'none';
-
-//                 options.forEach((option) => {
-//                     const button = htmlContainer('div', option.text, ['field-types-button'])
-//                     button.dataset.value = option.value;
-                    
-//                     if (option.selected) {
-//                         button.classList.add('active');
-//                     }
-
-//                     button.addEventListener('click', () => {
-                        
-//                     });
-                
-//                     container.appendChild(button);
-                
-//                     item.parentNode.insertBefore(container, item.nextSibling);
-//                 })
-//             })
-            
-//         }
-//     }
-
-//     textInput(data) {
-//         // console.log(data)
-//         const input = new TextInput()
-//         return input.render(data);
-//     }
-    
-//     textareaInput(data) {
-//         const input = new TextareaInput(data);
-//         return input.render(data);
-//     }
-    
-//     selectInput(data) {
-//         return new SelectInput(data);
-//     }
-    
-//     fileInput(data) {
-//         return new FileInput(data);
-//     }
-    
-//     // Запасной вариант для неизвестных типов
-//     defaultInput(data) {
-//         return new TextInput(data);
-//     }
-// }
-
-// function htmlContainer(tag, content = false, classes = []){
-//     let elem = document.createElement(tag);
-//     if (content) elem.innerHTML = content;
-//     if (classes) {
-//         classes.forEach(classname => {
-//             elem.classList.add(classname)
-//         })
-//     }
-//     return elem;
-// }
-// function capitalize(str) {
-//     if (!str) return str;
-//     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-// }
-// document.addEventListener('DOMContentLoaded', () => {
-//     window.formBuilder = new FormBuilder();
-// });
-
-// const emptyFormData = {
-//   "formName": "Новая форма",
-//   "fields": [
-//     {
-//       "id": "17711401410806egvd",
-//       "type": "text",
-//       "question" : "Вопрос формы",
-//       "placeholder": "Текст",
-//       "name": "text",
-//       "required": true,
-//       "settings": {}
-//     }
-//   ],
-//   "totalFields": 1
-// }
-
 const fieldset = {
   "formName": "Динамическая форма",
   "fields": [
@@ -679,7 +544,7 @@ class FormBuilder {
 
         // 2. Проверяем, что форма действительно найдена
         if (!form || !(form instanceof HTMLFormElement)) {
-            console.error('❌ Форма не найдена. Убедитесь, что контейнер находится внутри <form>.');
+            console.error('Форма не найдена. Убедитесь, что контейнер находится внутри <form>.');
             return;
         }
 
@@ -699,7 +564,7 @@ class FormBuilder {
         try {
             hiddenField.value = JSON.stringify(this.formData);
         } catch (e) {
-            console.error('❌ Ошибка JSON.stringify:', e);
+            console.error('Ошибка JSON.stringify:', e);
             alert('Не удалось преобразовать данные для отправки');
             return;
         }
@@ -708,7 +573,7 @@ class FormBuilder {
         const dataSize = hiddenField.value.length;
         console.log(`📦 Размер данных: ${dataSize} байт`);
         if (dataSize > 5 * 1024 * 1024) {
-            console.warn('⚠️ Данные слишком большие (>5MB), сервер может их не принять');
+            console.warn('Данные слишком большие (>5MB), сервер может их не принять');
         }
 
         // 7. Добавляем поле в форму
@@ -717,11 +582,11 @@ class FormBuilder {
         // 8. Убеждаемся, что в форме есть CSRF-токен (для Laravel)
         const csrfToken = form.querySelector('input[name="_token"]');
         if (!csrfToken) {
-            console.warn('⚠️ В форме не найден CSRF-токен. Сервер может вернуть ошибку 419.');
+            console.warn('В форме не найден CSRF-токен. Сервер может вернуть ошибку 419.');
         }
 
         // 9. ВАЖНО: выводим всё, что будет отправлено, для отладки
-        console.log('📋 Данные формы перед отправкой:');
+        console.log('Данные формы перед отправкой:');
         const formData = new FormData(form);
         for (let pair of formData.entries()) {
             console.log(pair[0], pair[1]);
@@ -871,6 +736,6 @@ builder.onChange((formData) => {
 
 // Для начального рендера предпросмотра
 document.getElementById('form-preview').innerHTML = builder.getFormFieldsHtml();
-
+document.getElementById('form-preview').insertAdjacentHTML('afterbegin', `<h3 class="form-preview-title">предпросмотр формы</h3> `);
 
 

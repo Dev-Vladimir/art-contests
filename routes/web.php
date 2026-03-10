@@ -36,18 +36,22 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('/user/forms/edit/{id}', [FormsController::class, 'edit'])->name('user.forms.edit');
     Route::post('/user/forms/edit/{id}', [FormsController::class, 'update'])->name('user.forms.update');
     Route::get('/user/forms/show/{id}', [FormsController::class, 'show'])->name('user.forms.show');
-    Route::get('/user/forms/delete/{id}', [FormsController::class, 'delete'])->name('user.forms.delete');
+    Route::get('/user/forms/delete/{id}', [FormsController::class, 'destroy'])->name('user.forms.delete');
 
 
-    Route::get('user/{id?}', [UsersController::class, 'dashboard'])->name('dashboard');
-    Route::get('user/edit/{id?}', [UsersController::class, 'edit'])->name('user.edit');
-    Route::post('user/edit/{id?}', [UsersController::class, 'updateProfile']);
-    Route::post('user/edit-email', [AuthController::class, 'editEmail'])->name('user.edit-email');
+    
+    // Route::get('/user/edit/{id?}', [UsersController::class, 'edit'])->name('user.edit');
+
+    
+    Route::get('user/edit/{user?}', [UsersController::class, 'edit'])->name('user.edit');
+    Route::post('/user/edit/{id?}', [UsersController::class, 'updateProfile']);
+    Route::post('/user/edit-email', [AuthController::class, 'editEmail'])->name('user.edit-email');
     Route::get('/verify-email-change/{token}', [AuthController::class, 'verifyEmailChange'])->name('verify.email.change');
     Route::post('/resend-email-change', [AuthController::class, 'resendEmailChange'])->name('resend.email.change');
-    Route::get('user/delete/{id?}', [UsersController::class, 'delete'])->name('user.delete');
-    Route::post('user/delete/{id?}', [UsersController::class, 'destroy']);
-    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/user/delete/{id?}', [UsersController::class, 'delete'])->name('user.delete');
+    Route::post('/user/delete/{id?}', [UsersController::class, 'destroy']);
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/user/{id?}', [UsersController::class, 'dashboard'])->name('dashboard');
 });
 
 

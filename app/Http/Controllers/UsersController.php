@@ -27,8 +27,14 @@ class UsersController extends Controller
             : view('user.dashboard', compact('user'));
     }
 
-    public function edit($id = null){
-        $user = User::findOrFail($id ?? Auth::id());
+    public function edit(?User $user = null){
+        logger()->info('Edit method called', [
+            'user_param' => $user,
+            'auth_user' => Auth::id(),
+            'url' => request()->url()
+        ]);
+        $user = $user ?? Auth::user();
+        if (!$user) return redirect()->route('login')->with('error', 'Необходимо авторизоваться');
         $this->authorize('edit-user', $user);
         // dd($user);
         return view('user.profile.edit-profile', compact('user'));

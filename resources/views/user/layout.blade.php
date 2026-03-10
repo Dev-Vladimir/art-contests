@@ -25,7 +25,7 @@
             <div class="profile-controls d-flex justify-content-between">
                 <a href="#" class="button small bg-purple"><i class="bi bi-eye-fill"></i></a>
                 <a href="#" class="button small bg-purple">Поменять обложку</a>
-                <a href="{{ route('user.edit') }}" class="button small bg-purple">Редактировать профиль</a>
+                <a href="{{ route('user.edit')}}" class="button small bg-purple">Редактировать профиль</a>
                 <a href="{{ route('user.delete') }}" class="button small attention-button">Удалить аккаунт</a>
             </div>
         </div>
@@ -40,6 +40,7 @@
                 <li><a href="#">Результаты</a></li>
                 <li><a href="#">Статистика</a></li>
                 <li><a href="#">Обучение</a></li>
+                <li><a href="{{ route('logout') }}">Выход</a></li>
             </ul>
         </div>
         <!-- <div class="main-controls d-flex">

@@ -9,7 +9,7 @@
 }
 .form-preview{
 	width: 50%;
-	padding: 20px;
+	padding: 0 20px 20px 20px;
 	border-left: 1px solid var(--color-violet);
 }
 .form-preview-field{
@@ -55,6 +55,12 @@
 }
 .form-preview-field>select{
 	width: 60%;
+}
+h3.form-preview-title{
+	margin-top: -10px;
+	color: var(--color-violet);
+	font-size: 36px;
+	margin-bottom: 20px;
 }
 .form>form{
 	display: block;

@@ -14,8 +14,8 @@
             <div class="name">{{$item->name}}</div>
             <div class="edit-links d-flex">
                 <a href="{{route('dashboard', ['id' => $item->id])}}" class="button">Посмотреть профиль</a>
-                <a href="{{route('user.edit', ['id' => $item->id])}}" class="button">Редактировать</a>
-                <a href="{{route('user.delete', ['id' => $item->id])}}" class="button">Удалить</a>
+                <a href="{{route('user.edit', $item)}}" class="button">Редактировать</a>
+                <a href="{{route('user.delete', $item)}}" class="button">Удалить</a>
             </div>
         </div>
     @empty
