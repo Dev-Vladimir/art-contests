@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Models\Form;
 use App\Models\Contest;
+use App\Models\Subscription;
 
 class User extends Authenticatable
 {
@@ -64,7 +65,70 @@ class User extends Authenticatable
         return $this->hasMany(Contest::class);
     }
 
+    public function subscriptions() :HasMany {
+        return $this->hasMany(Subscription::class);
+    }
+
     public function isAdmin() {
         return $this->role === 3;
     }
+
+    public function isBanned(): bool{
+        return !is_null($this->banned_at);
+    }
+
+    public function activeSubscription(){
+        return $this->hasOne(Subscription::class)
+            ->where('status', 'active')
+            ->where(function ($query) {
+                $query->whereNull('ends_at')
+                    ->orWhere('ends_at', '>', now());
+            })
+            ->latest();
+    }
+
+    public function currentPlan(){
+        return $this->activeSubscription?->plan;
+    }
+
+
+    public function getActiveContestsCount(): int
+    {
+        return $this->contests()->where('is_active', true)->count();
+    }
+
+    /**
+     * Проверить, можно ли активировать новый конкурс
+     */
+    public function canActivateContest(): bool
+    {
+        if ($this->isBanned()) {
+            return false;
+        }
+        
+        $activeCount = $this->getActiveContestsCount();
+        $limit = $this->currentPlan()?->contests_limit ?? 0;
+        
+        return $activeCount < $limit;
+    }
+
+    /**
+     * Получить количество оставшихся слотов для активных конкурсов
+     */
+    public function getRemainingActiveSlots(): int
+    {
+        $activeCount = $this->getActiveContestsCount();
+        $limit = $this->currentPlan()?->contests_limit ?? 0;
+        
+        return max(0, $limit - $activeCount);
+    }
+
+    /**
+     * Проверить, может ли пользователь создать конкурс (всегда true, но с предупреждением)
+     */
+    public function canCreateContest(): bool
+    {
+        return !$this->isBanned(); // создавать можно всегда, активировать - по лимиту
+    }
+
 }

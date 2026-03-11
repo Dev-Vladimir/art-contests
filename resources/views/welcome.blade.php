@@ -126,19 +126,15 @@
                 <div class="prices-list d-flex justify-content-between">
                     <div class="prices-item">
                         <div class="title">Базовый</div>
-                        <div class="desc">до 3 конкурсов в месяц
-доступ к разделу “результаты”
-</div>
-                        <div class="cost">300 руб/мес</div>
-                        <a href="#" class="button button-dark-stroke">Создать аккаунт</a>
+                        <div class="desc">1 конкурс в месяц</div>
+                        <div class="cost">300 руб/мес*</div>
+                        <a href="{{route('register', ['plan' => 'basic'])}}" class="button button-dark-stroke">Создать аккаунт</a>
                     </div>
                     <div class="prices-item">
                         <div class="title">Продвинутый</div>
-                        <div class="desc">до 6 конкурсов в месяц
-доступ к разделу “результаты”
-доступ к разделу “статистика”</div>
+                        <div class="desc">до 3 конкурсов в месяц, доступ к разделу “результаты”, доступ к разделу “статистика”</div>
                         <div class="cost">600 руб/мес</div>
-                        <a href="#" class="button button-dark-stroke">Создать аккаунт</a>
+                        <a href="{{route('register', ['plan' => 'advanced'])}}" class="button button-dark-stroke">Создать аккаунт</a>
                     </div>
                     <div class="prices-item">
                         <div class="title">Ультра</div>
@@ -147,7 +143,7 @@
 доступ к разделу “статистика”
 возможность загружать протоколы жюри</div>
                         <div class="cost">1000 руб/мес</div>
-                        <a href="#" class="button button-dark-stroke">Создать аккаунт</a>
+                        <a href="{{route('register', ['plan' => 'premium'])}}" class="button button-dark-stroke">Создать аккаунт</a>
                     </div>
                 </div>
                 <h2>Сомневаетесь? Попробуйте месяц бесплатно!</h2>
@@ -167,6 +163,7 @@
                     <li><a href="{{route('contests.list')}}">Конкурсы</a></li>
                     <li><a href="{{route('news')}}">Новости</a></li>
                     <li><a href="{{route('contact')}}">Контакты</a></li>
+                    <li><a href="{{route('login')}}">Вход на сайт</a></li>
                 </ul>
             </div>
         </div>

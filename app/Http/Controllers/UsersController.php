@@ -117,4 +117,13 @@ class UsersController extends Controller
             return redirect()->back()->with('error', 'Ошибка: ' . $e->getMessage());
         }
     }
+
+    public function changePlan(){
+        //
+        echo 'change plan';
+    }
+
+    public function storeChangePlan(Request $requet){
+        //
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\ContestsController;
 use App\Http\Controllers\FormsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\CheckBanned;
 
 Route::view('/', 'welcome')->name('home');
 Route::view('/about', 'guest.about')->name('about');
@@ -17,7 +18,7 @@ Route::get('/contests', [IndexController::class, 'contests'])->name('contests.li
 Route::get('/news', [IndexController::class, 'news'])->name('news');
 
 //для юзеров
-Route::group(['middleware' => ['auth', 'verified']], function(){
+Route::group(['middleware' => ['auth', 'verified', CheckBanned::class]], function(){
     Route::get('/user/contests', [ContestsController::class, 'index'])->name('user.contests.index');
     Route::get('/user/contests/new', [ContestsController::class, 'create'])->name('user.contests.new');
     Route::post('/user/contests/new', [ContestsController::class, 'store']);
@@ -36,18 +37,13 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('/user/forms/edit/{id}', [FormsController::class, 'edit'])->name('user.forms.edit');
     Route::post('/user/forms/edit/{id}', [FormsController::class, 'update'])->name('user.forms.update');
     Route::get('/user/forms/show/{id}', [FormsController::class, 'show'])->name('user.forms.show');
-    Route::get('/user/forms/delete/{id}', [FormsController::class, 'destroy'])->name('user.forms.delete');
-
-
-    
-    // Route::get('/user/edit/{id?}', [UsersController::class, 'edit'])->name('user.edit');
-
-    
-    Route::get('user/edit/{user?}', [UsersController::class, 'edit'])->name('user.edit');
+    Route::get('/user/forms/delete/{id}', [FormsController::class, 'destroy'])->name('user.forms.delete');Route::get('user/edit/{user?}', [UsersController::class, 'edit'])->name('user.edit');
     Route::post('/user/edit/{id?}', [UsersController::class, 'updateProfile']);
     Route::post('/user/edit-email', [AuthController::class, 'editEmail'])->name('user.edit-email');
     Route::get('/verify-email-change/{token}', [AuthController::class, 'verifyEmailChange'])->name('verify.email.change');
     Route::post('/resend-email-change', [AuthController::class, 'resendEmailChange'])->name('resend.email.change');
+    Route::get('/user/change-plan', [UsersController::class, 'changePlan'])->name('user.change-plan');
+    Route::post('/user/change-plan', [UsersController::class, 'storeChangePlan']);
     Route::get('/user/delete/{id?}', [UsersController::class, 'delete'])->name('user.delete');
     Route::post('/user/delete/{id?}', [UsersController::class, 'destroy']);
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -61,7 +57,7 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
 
 // Гостевые маршруты (только для неавторизованных)
 Route::middleware('guest')->group(function () {
-    Route::get('/register', [AuthController::class, 'register'])->name('register');
+    Route::get('/register/{plan?}', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'storeRegister']);
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'storeLogin']);
