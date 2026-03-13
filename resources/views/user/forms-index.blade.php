@@ -6,12 +6,9 @@
 @endsection
 
 @section('content')
-    @if(session('error'))
-        <h3>{{ session('error') }}</h3>
-    @endif
-    @if(session('success'))
-        <h3>{{ session('success') }}</h3>
-    @endif
+    
+@include('includes.flash-messages')
+
 @if(!empty($forms))
     <div class="forms-list">
         @foreach ($forms as $form)

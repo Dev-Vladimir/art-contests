@@ -104,6 +104,12 @@ class AuthServiceProvider extends ServiceProvider
             if ($user->isBanned()) return false;
             return $canAccess($user, $contest);
         });
+        Gate::define('activate-contest', function (User $user, Contest $contest) use ($canAccess) {
+            return $canAccess($user, $contest);
+        });
+        Gate::define('inactivate-contest', function (User $user, Contest $contest) use ($canAccess) {
+            return $canAccess($user, $contest);
+        });
 
 
         // ===== ГЕЙТЫ ДЛЯ USER =====

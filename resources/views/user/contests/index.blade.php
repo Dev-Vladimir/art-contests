@@ -7,12 +7,9 @@
 @section('page_title', 'Конкурсы')
 
 @section('content')
-    @if(session('error'))
-        <h3>{{ session('error') }}</h3>
-    @endif
-    @if(session('success'))
-        <h3>{{ session('success') }}</h3>
-    @endif
+    
+    @include('includes.flash-messages')
+
     <div class="contests-list">
     @if(!empty($contests))
         @foreach ($contests as $contest)
@@ -21,7 +18,7 @@
                 <div class="edit-links d-flex">
                     <a href="{{route('user.contests.show', ['id' => $contest['id']])}}" class="button">Посмотреть</a>
                     @if($contest['is_active'])
-                        <a href="{{route('user.contests.deactivate', ['id' => $contest['id']])}}" class="button">Завершить</a>
+                        <a href="{{route('user.contests.inactivate', ['id' => $contest['id']])}}" class="button">Завершить</a>
                     @else
                         <a href="{{route('user.contests.activate', ['id' => $contest['id']])}}" class="button">Начать конкурс</a>
                     @endif

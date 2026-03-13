@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Form;
-
+use Exception;
 
 class ContestsController extends Controller
 {
@@ -167,18 +167,118 @@ class ContestsController extends Controller
     }
 
     public function makeActive($id){
-
+        try{
+            $contest = Contest::findOrFail($id);
+            $this->authorize('activate-contest', $contest);
+            if ($contest->is_active) return redirect()->back->with('error', 'Конкурс уже активен');
+            $contest->is_active = true;
+            $save = $contest->save();
+            if (!$save) return redirect(route('user.contests.list'))->with('error', 'Не удалось активировать конкурс');
+            return redirect()->back()->with('success', 'Конкурс успешно назначен активным');
+        }catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+        // Ошибка прав доступа
+            return redirect()->back()->with('error', 'У вас нет прав для активации этого конкурса');
+                
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Конкурс не найден
+            return redirect()->route('user.contests.index')->with('error', 'Конкурс не найден');
+                
+        } catch (\Exception $e) {
+            // Любая другая ошибка
+            \Log::error('Неизвестная ошибка при активации конкурса', [
+                'contest_id' => $id,
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage()
+            ]);
+            
+            return redirect()->route('user.contests.index')->with('error', 'Произошла ошибка при активации конкурса');
+        }
     }
 
     public function makeInactive($id){
-
+        try{
+            $contest = Contest::findOrFail($id);
+            $this->authorize('activate-contest', $contest);
+            if (!$contest->is_active) return redirect()->back->with('error', 'Конкурс уже приостановлен');
+            $contest->is_active = false;
+            $save = $contest->save();
+            if (!$save) return redirect(route('user.contests.index'))->with('error', 'Не удалось приостановить конкурс');
+            return redirect()->back()->with('success', 'Конкурс успешно приостановлен');
+        }catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+        // Ошибка прав доступа
+            return redirect()->back()->with('error', 'У вас нет прав для приостановки этого конкурса');
+                
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Конкурс не найден
+            return redirect()->route('user.contests.index')->with('error', 'Конкурс не найден');
+                
+        } catch (\Exception $e) {
+            // Любая другая ошибка
+            \Log::error('Неизвестная ошибка при деактивации конкурса', [
+                'contest_id' => $id,
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage()
+            ]);
+            
+            return redirect()->route('user.contests.index')->with('error', 'Произошла ошибка при деактивации конкурса');
+        }
     }
 
     public function open($id){
-
+        try{
+            $contest = Contest::findOrFail($id);
+            $this->authorize('activate-contest', $contest);
+            if ($contest->open) return redirect()->back->with('error', 'Заявки на конкурс уже принимаются');
+            $contest->open = true;
+            $save = $contest->save();
+            if (!$save) return redirect(route('user.contests.index'))->with('error', 'Не удалось открыть подачу заявок');
+            return redirect()->back()->with('success', 'Подача заявок успешно открыта!');
+        }catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+        // Ошибка прав доступа
+            return redirect()->back()->with('error', 'У вас нет прав для открытия подачи заявок на этот конкурс');
+                
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Конкурс не найден
+            return redirect()->route('user.contests.index')->with('error', 'Конкурс не найден');
+                
+        } catch (\Exception $e) {
+            // Любая другая ошибка
+            \Log::error('Неизвестная ошибка при открытии подачи заявок', [
+                'contest_id' => $id,
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage()
+            ]);
+            
+            return redirect()->route('user.contests.index')->with('error', 'Произошла ошибка открытии подачи заявок на конкурс');
+        }
     }
 
     public function close($id){
-        
+        try{
+            $contest = Contest::findOrFail($id);
+            $this->authorize('activate-contest', $contest);
+            if (!$contest->open) return redirect()->back->with('error', 'Подача заявок уже приостановлена');
+            $contest->open = false;
+            $save = $contest->save();
+            if (!$save) return redirect(route('user.contests.index'))->with('error', 'Не удалось приостановить подачу заявок конкурс');
+            return redirect()->back()->with('success', 'Подача заявок на конкурс закрыта');
+        }catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+        // Ошибка прав доступа
+            return redirect()->back()->with('error', 'У вас нет прав для приостановки подачи заявок на конкурс');
+                
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Конкурс не найден
+            return redirect()->route('user.contests.index')->with('error', 'Конкурс не найден');
+                
+        } catch (\Exception $e) {
+            // Любая другая ошибка
+            \Log::error('Неизвестная ошибка при завершении подачи заявок на конкурс', [
+                'contest_id' => $id,
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage()
+            ]);
+            
+            return redirect()->route('user.contests.index')->with('error', 'Произошла ошибка при завершении подачи заявок на конкурс');
+        }
     }
 }

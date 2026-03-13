@@ -6,12 +6,14 @@
 
 @section('content')
     <div class="contest-info">
+        <h3 class="contest-title">{{$contest->title}}</h3>
+        @include('includes.flash-messages')
         <div class="contest-active d-flex">
-            <div class="title">Активность конкурса: {{$contest->active ? 'Конкурс активен' : 'Неактивен'}}</div>
-            @if($contest->active)
-                <a href="{{user.contests.inactivate}}" class="button">Завершить конкурс</a>
+            <div class="title">Активность конкурса: {{$contest->is_active ? 'Конкурс активен' : 'Неактивен'}}</div>
+            @if($contest->is_active)
+                <a href="{{route('user.contests.inactivate', ['id' => $contest->id])}}" class="button">Завершить конкурс</a>
             @else
-                <a href="user.contests.activate" class="button">Начать конкурс</a>
+                <a href="{{route('user.contests.activate', ['id' => $contest->id])}}" class="button">Начать конкурс</a>
             @endif
         </div>
         <div class="contest-open d-flex">
