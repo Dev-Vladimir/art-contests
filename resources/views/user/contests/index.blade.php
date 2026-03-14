@@ -14,7 +14,7 @@
     @if(!empty($contests))
         @foreach ($contests as $contest)
             <div class="contest-preview">
-                <div class="title">{{$contest['title']}}</div>
+                <div class="title">{{ucfirst($contest['title'])}}</div>
                 <div class="edit-links d-flex">
                     <a href="{{route('user.contests.show', ['id' => $contest['id']])}}" class="button">Посмотреть</a>
                     @if($contest['is_active'])

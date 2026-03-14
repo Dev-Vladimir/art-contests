@@ -7,8 +7,10 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Models\Form;
-// use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Auth;
+use App\Models\GeneratedForm;
+use App\Services\FormBuilderService;
+use Illuminate\Support\Facades\DB;
 
 class FormsController extends Controller
 {
@@ -44,18 +46,27 @@ class FormsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->toArray());
         $user = $this->getUser();
         $form_settings = json_decode($request->form_builder_data);
-        // dd($form_settings);
         $title = $form_settings->formName;
-
-        Form::create([
-            'title' => $title,
-            'form_settings' => $request->form_builder_data,
-            'user_id' => $user->id
-        ]);
-        return redirect(route('user.forms.index'))->with('message', 'Форма успешно добавлена!');
+        if ($title == '' || empty($form_settings->fields)) return redirect()->back()->with('error', 'Поля формы или название не могут быть пустыми!');
+        try{
+            DB::beginTransaction();
+            
+            $form = Form::create([
+                'title' => $title,
+                'form_settings' => $request->form_builder_data,
+                'user_id' => $user->id
+            ]);
+            $content = FormBuilderService::formToHTML($form->form_settings);
+            GeneratedForm::saveForm($form->id, $form->title, Auth::id(), $content);
+            DB::commit();
+            return redirect(route('user.forms.index'))->with('message', 'Форма успешно добавлена!');
+        }catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Произошла ошибка добавления данных');
+        }
+        
     }
 
     /**
@@ -86,15 +97,22 @@ class FormsController extends Controller
         $form = Form::find($id);
         $user = $this->getUser();
         $form_settings = json_decode($request->form_builder_data);
-        // dd($form_settings);
         $title = $form_settings->formName;
-        $form->update([
-            'title' => $title,
-            'form_settings' => $request->form_builder_data,
-            'user_id' => $user->id
-        ]);
-        $form->save;
-        return redirect(route('user.forms.index'))->with('message', 'Форма успешко добавлена!');
+        if ($title == '' || empty($form_settings->fields)) return redirect()->back()->with('error', 'Поля формы или название не могут быть пустыми!');
+        try{
+            DB::beginTransaction();
+            $form->update([
+                'title' => $title,
+                'form_settings' => $request->form_builder_data,
+                'user_id' => $user->id
+            ]);
+            $form->save;
+            DB::commit();
+            return redirect(route('user.forms.index'))->with('message', 'Форма успешко добавлена!');
+        }catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ошибка обновления данных формы');
+        }
     }
 
     /**

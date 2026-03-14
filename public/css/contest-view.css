@@ -96,37 +96,67 @@
     font-size: 24px;
     margin-top: 20px;
 }
+.contest-title{
+    margin-bottom: 40px;
+}
+.contest-info .title{
+    font-size: 36px;
+}
 .contest-edit-buttons{
     width: 100%;
     padding: 0 2.5%;
 }
 .contest-edit-buttons>.button{
     display: inline-flex;
+    margin-right: 20px;
 }
 .contest-info .button{
     display: inline-flex;
-    height: auto;
+    height: 60px;
     padding: 5px 10px;
+    width: 37.5%;
+}
+.contest-info .button:hover{
+    background: var(--color-violet);
+    color: #fff;
 }
 .contest-info>.d-flex{
     align-items: center;
+    margin-bottom: 20px;
 }
 .contest-info .title{
-    width: 25%;
+    width: 50%;
+    font-size: 36px;
 }
-.participants, .form{
-    width: 25%;
-    height: 400px;
+.participants, .competition-form{
+    width: 40%;
+    height: auto;
     margin-right: 12.5%;
     background: var(--color-purple);
     padding: 20px 10px;
     color: var(--color-violet);
     flex-wrap: wrap;
+    border-radius: 10px;
+    align-items: flex-start;
+    padding: 40px 20px 100px;
 }
-.participants>div, .form>div{
+.participants>div, .competition-form>div{
     width: 100%;
     color: var(--color-violet);
+    font-size: 24px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.participants>div.title, .competition-form>div.title{
+    width: 100%;
+    margin: 0;
+}
+.participants .button, .competition-form .button{
+    width: auto;
 }
 .participants>.button{
     height: 50px;
+}
+.contest-info-content{
+    margin-top: 80px;
 }

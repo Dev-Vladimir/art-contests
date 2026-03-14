@@ -1,4 +1,4 @@
-@extends('user.dashboard')
+@extends('user.layout')
 
 @section('styles')
 <link rel="stylesheet" href="{{asset('css/user-form.css')}}">
@@ -8,8 +8,9 @@
 @section('content')
 
 <div class="page-title">
-    <h3>Регистрация</h3>
+    <h3 class="color-dark">Редактирование формы</h3>
 </div>
+@include('includes.flash-messages')
 <div class="d-flex justify-content-center form register-form">
     <form action="{{$route}}" method="POST" id="form">
         @csrf
@@ -41,7 +42,6 @@
 @endsection
 
 @section('script')
-<!-- <script src="{{asset('js/radio-to-toggle.js')}}"></script> -->
 <script src="{{asset('js/edit-form-builder.js')}}"></script>
 <script src="{{asset('js/edit-form-text.js')}}"></script>
 <script src="{{asset('js/edit-form-textarea.js')}}"></script>

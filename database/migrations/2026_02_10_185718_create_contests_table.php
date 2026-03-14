@@ -17,7 +17,7 @@ return new class extends Migration
             $table->mediumText('title');
             $table->mediumText('nominations')->nullable();
             $table->mediumText('groups')->nullable();
-            $table->integer('user_id');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->boolean('is_active')->default(false);
             $table->boolean('open')->default(false);
             

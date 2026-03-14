@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
+        Schema::create('generated_forms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('plan_id')->constrained()->onDelete('cascade');
-            $table->timestamp('starts_at')->nullable();
-            $table->timestamp('ends_at')->nullable();
-            // $table->timestamp('trial_ends_at')->nullable();
-            $table->string('status')->default('active');
-            $table->json('meta')->nullable();
+            $table->foreignId('form_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+            $table->string('title');
+            $table->longText('content');
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('generated_forms');
     }
 };

@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Form;
+use App\Models\GeneratedForm;
 use Exception;
+use App\Services\FormBuilderService;
 
 class ContestsController extends Controller
 {
@@ -170,6 +172,7 @@ class ContestsController extends Controller
         try{
             $contest = Contest::findOrFail($id);
             $this->authorize('activate-contest', $contest);
+            // dd($contest->form->toArray());
             if ($contest->is_active) return redirect()->back->with('error', 'Конкурс уже активен');
             $contest->is_active = true;
             $save = $contest->save();

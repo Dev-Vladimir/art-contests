@@ -8,7 +8,14 @@
         <div class="page-title">
             <h3>Редактирование конкурса</h3>
         </div>
+        @include('includes.flash-messages')
         <div class="d-flex justify-content-center form register-form">
+            @if (empty($forms))
+                <div>
+                    <h3>Вы не можете редактировать конкурс, пока не добавите хотя бы одну форму</h3>
+                    <a href="{{ route('user.forms.new') }}" class="button button-dark-stroke">Добавить форму</a>
+                </div>
+            @else
             <form action="{{route('user.contests.edit', ['id' => $contest->id])}}" method="POST">
                 @csrf
                 <div class="form-input d-flex">
@@ -60,6 +67,7 @@
                 
                 <button type="submit">Обновить конкурс</button>
             </form>
+            @endif
         </div>
     </div>
 @endsection
