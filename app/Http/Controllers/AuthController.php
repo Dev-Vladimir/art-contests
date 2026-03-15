@@ -56,15 +56,6 @@ class AuthController extends Controller
         // Отправляем письмо для подтверждения email
         $user->sendEmailVerificationNotification();
 
-        $basicPlan = Plan::where('slug', 'basic')->first();
-        if ($basicPlan) {
-            $user->subscriptions()->create([
-                'plan_id' => $basicPlan->id,
-                'starts_at' => now(),
-                'status' => 'active',
-            ]);
-        }
-
         // Можно также залогинить пользователя, но часто просят подтвердить email сначала
         // Auth::login($user);
 
@@ -89,13 +80,6 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-
-            //проверяем бан пользователя
-            if (Auth::user()->isBanned()) {
-                Auth::logout();
-                return redirect()->route('login')
-                    ->withErrors(['email' => 'Ваш аккаунт заблокирован. Обратитесь к администратору.']);
-            }
 
             // Проверяем, подтверждён ли email (если нет, можно разлогинить или перенаправить на страницу верификации)
             if (is_null(Auth::user()->email_verified_at)) {

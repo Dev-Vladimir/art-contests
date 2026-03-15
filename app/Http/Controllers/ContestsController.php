@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Contest;
+use App\Models\ContestForm;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
@@ -44,12 +45,11 @@ class ContestsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->toArray());
         $user = Auth::user();
 
         $validated = $request->validate([
             'title' => 'required|max:12500',
-            'form_id' => 'required|exists:forms,id', // проверяем что форма существует
+            'form_id' => 'required|exists:forms,id',
             'groups' => 'nullable|array',
             'nominations' => 'nullable|array',
         ], [
@@ -57,7 +57,6 @@ class ContestsController extends Controller
             'title.max' => 'Слишком длинное название',
             'form_id.required' => 'Вы не привязали форму к конкурсу',
         ]);
-
         $data = [
             'user_id' => $user->id,
             'title' => $request->title,
@@ -72,12 +71,32 @@ class ContestsController extends Controller
         if ($request->has('nominations') && is_array($request->nominations)) {
             $data['nominations'] = implode('|', $request->nominations);
         }
-
-        // Создаем конкурс - form_id сохраняется автоматически
-        $contest = Contest::create($data);
-
-        return redirect(route('user.contests.index'))
-            ->with('success', 'Конкурс успешно создан');
+        try{
+            DB::beginTransaction();
+            $contest = Contest::create($data);
+            $contest->load('form.generatedForm');
+            $generated_form = $contest->form->generatedForm;
+            $contest_form_html = FormBuilderService::makeApplicationForm($contest, $generated_form);
+            ContestForm::create([
+                'contest_id' => $contest->id,
+                'user_id' => $user->id,
+                'form_id' => $contest->form_id,
+                'generated_form_id' => $contest->form->generatedForm->id,
+                'title' => $contest->form->title,
+                'validate_rules' => $contest->form->form_settings,
+                'content'=> $contest_form_html
+            ]);
+            DB::commit();
+            return redirect(route('user.contests.index'))->with('success', 'Конкурс успешно создан');
+        }catch(\Exception $e){
+            DB::rollBack();
+            \Log::error('Неизвестная ошибка при активации конкурса', [
+                'action' => 'ContestsController.store()',
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -130,12 +149,25 @@ class ContestsController extends Controller
         if ($request->has('groups') && is_array($request->groups)) {
             $data['groups'] = implode('|', $request->groups);
         }
-
         if ($request->has('nominations') && is_array($request->nominations)) {
             $data['nominations'] = implode('|', $request->nominations);
         }
-        $contest->update($data);
-        return redirect(route('users.contests.index'))->with('success', 'Конкурс успешно обновлен');
+        try{
+            DB::beginTransaction();
+            $contest->update($data);
+            $generated_form = $contest->form()->get()->first()->generatedForm()->get()->first();
+            $contest_form_html = FormBuilderService::makeApplicationForm($contest, $generated_form);
+            
+            DB::commit();
+            return redirect(route('user.contests.index'))->with('success', 'Конкурс успешно обновлен');
+        }catch(\Exception $e){
+            DB::rollBack();
+            \Log::error('Неизвестная ошибка при активации конкурса', [
+                'contest_id' => $id,
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -172,22 +204,13 @@ class ContestsController extends Controller
         try{
             $contest = Contest::findOrFail($id);
             $this->authorize('activate-contest', $contest);
-            // dd($contest->form->toArray());
+
             if ($contest->is_active) return redirect()->back->with('error', 'Конкурс уже активен');
             $contest->is_active = true;
             $save = $contest->save();
             if (!$save) return redirect(route('user.contests.list'))->with('error', 'Не удалось активировать конкурс');
             return redirect()->back()->with('success', 'Конкурс успешно назначен активным');
-        }catch (\Illuminate\Auth\Access\AuthorizationException $e) {
-        // Ошибка прав доступа
-            return redirect()->back()->with('error', 'У вас нет прав для активации этого конкурса');
-                
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            // Конкурс не найден
-            return redirect()->route('user.contests.index')->with('error', 'Конкурс не найден');
-                
-        } catch (\Exception $e) {
-            // Любая другая ошибка
+        }catch (\Exception $e) {
             \Log::error('Неизвестная ошибка при активации конкурса', [
                 'contest_id' => $id,
                 'user_id' => Auth::id(),

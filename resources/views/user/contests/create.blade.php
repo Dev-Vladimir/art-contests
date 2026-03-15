@@ -9,6 +9,7 @@
         <div class="page-title">
             <h3>Создание нового конкурса</h3>
         </div>
+        @include('includes.flash-messages')
         <div class="d-flex justify-content-center form register-form">
             @if (empty($forms))
                 <div>

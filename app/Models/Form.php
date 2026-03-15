@@ -10,6 +10,10 @@ use App\Models\Contest;
 
 class Form extends Model
 {
+    protected $fillable = [
+        'title', 'form_settings', 'user_id', 'content', 'validate_rules'
+    ];
+
     public function user() : BelongsTo{
         return $this->belongsTo(User::class);
     }
@@ -18,8 +22,4 @@ class Form extends Model
     {
         return $this->hasMany(Contest::class);
     }
-
-    protected $fillable = [
-        'title', 'form_settings', 'user_id',
-    ];
 }

@@ -7,7 +7,8 @@ use App\Http\Controllers\ContestsController;
 use App\Http\Controllers\FormsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\AuthController;
-use App\Http\Middleware\CheckBanned;
+use App\Http\Controllers\ApplicationsController;
+// use App\Http\Middleware\CheckBanned;
 
 Route::view('/', 'welcome')->name('home');
 Route::view('/about', 'guest.about')->name('about');
@@ -18,7 +19,7 @@ Route::get('/contests', [IndexController::class, 'contests'])->name('contests.li
 Route::get('/news', [IndexController::class, 'news'])->name('news');
 
 //для юзеров
-Route::group(['middleware' => ['auth', 'verified', CheckBanned::class]], function(){
+Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('/user/contests', [ContestsController::class, 'index'])->name('user.contests.index');
     Route::get('/user/contests/new', [ContestsController::class, 'create'])->name('user.contests.new');
     Route::post('/user/contests/new', [ContestsController::class, 'store']);
@@ -61,14 +62,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'storeRegister']);
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'storeLogin']);
-    Route::get('/forgot-password', [AuthController::class, 'forgotPasswordForm'])
-        ->name('password.request');
-    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])
-        ->name('password.email');
-    Route::get('/reset-password/{token}', [AuthController::class, 'resetPasswordForm'])
-        ->name('password.reset');
-    Route::post('/reset-password', [AuthController::class, 'resetPassword'])
-        ->name('password.update');
+    Route::get('/forgot-password', [AuthController::class, 'forgotPasswordForm'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+    Route::get('/reset-password/{token}', [AuthController::class, 'resetPasswordForm'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+    Route::get('/contest-register/{id}', [ApplicationsController::class, 'register'])->name('contest-register');
+    Route::post('/contest-register/{id}', [ApplicationsController::class, 'storeRegister']);
 });
 
 // Маршруты верификации (доступны и гостям, и пользователям, но обычно гостям)

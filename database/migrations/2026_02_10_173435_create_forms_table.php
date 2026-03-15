@@ -17,6 +17,8 @@ return new class extends Migration
             $table->timestamps();
             $table->string('title');
             $table->longText('form_settings');
+            $table->longText('content');
+            $table->longText('validate_rules');
         });
     }
 
